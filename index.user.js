@@ -218,6 +218,26 @@
 			categoryChoose.append(moduleOpt);
 		});
 
+		function makeInput(setting, configVal) {
+			const input = $(`<input/>`);
+			input.attr("type", setting.type);
+			input.attr("name", setting.id);
+
+			switch (setting.type) {
+				case "checkbox":
+					input.prop("checked", configVal);
+					break;
+				default:
+					input.val(configVal);
+			}
+
+			const label = $(`<label class="settingRadio" />`);
+			label.text(setting.name);
+			label.append(input);
+
+			return label;
+		}
+
 		categoryChoose.on("change", event => {
 			const newmod = modules.get(event.target.value);
 			settingsBox.empty();
@@ -225,13 +245,23 @@
 			const desc = $("<p/>");
 			desc.text(newmod.description || `You can change settings for the ${newmod.name} module here.`);
 
-			const enabledToggle = $(`
-				<label class="settingRadio"><input type="checkbox" name="enabled" ${config[newmod.id].enabled ? "checked" : ""} /> Enable Module</label>
-			`);
+			const enabledToggle = makeInput({
+				type: "checkbox",
+				id: "enabled",
+				name: "Enable Module",
+			}, config[newmod.id].enabled);
 
-			// Append everything to the settings box.
+			// Append these things to the settings box.
 			settingsBox.append(desc);
 			settingsBox.append(enabledToggle);
+
+			// Append module-provided settings.
+			if (newmod.settings) {
+				settingsBox.append("<br/>");
+				newmod.settings.forEach(setting => {
+					settingsBox.append(makeInput(setting), config[newmod.id][setting.id]);
+				});
+			}
 		});
 
 		settingsBox.on("change", event => {
