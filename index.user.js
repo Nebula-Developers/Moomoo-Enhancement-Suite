@@ -24,7 +24,7 @@
 		const modules = [{
 			id: "core",
 			name: "Core",
-			description: "Welcome to the Moomoo Enhancement Suite made by Nebula Developers! All changes you make here will only apply after a refresh."
+			description: "Welcome to the Moomoo Enhancement Suite made by Nebula Developers! All changes you make here will only apply after a refresh.",
 		}, {
 			id: "tracers",
 			name: "Tracers",
@@ -56,7 +56,31 @@
 					window.requestAnimationFrame(drawTracers);
 				}
 				drawTracers();
-			}
+			},
+		}, {
+			id: "smart_hat",
+			name: "Smart Hats",
+			description: "This module allows you to equip certain hats at certain times to get the most out of those actions.",
+		}, {
+			id: "heal",
+			name: "Autoheal",
+			description: "With this module, you can automatically heal when you get damaged.",
+		}, {
+			id: "object_map",
+			name: "Object Mapper",
+			description: "Maps the position of objects to your minimap.",
+		}, {
+			id: "projectile_blocker",
+			name: "Arrow Blocking",
+			description: "When you have a shield, this module will prevent arrows from hitting you by equipping it and blocking the arrow.",
+		}, {
+			id: "coordinates",
+			name: "Coordinates",
+			description: "Shows your coordinates.",
+		}, {
+			id: "minimap_biomes",
+			name: "Biomes on Minimap",
+			description: "Shows the different biomes on the minimap by coloring each region.",
 		}];
 
 		const config = new Proxy(JSON.parse(localStorage.getItem("mes_config")) || {}, {
