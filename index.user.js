@@ -22,6 +22,10 @@
 		let currentID = null;
 
 		const modules = [{
+			id: "core",
+			name: "Core",
+			description: "Welcome to the Moomoo Enhancement Suite made by Nebula Developers! All changes you make here will only apply after a refresh."
+		}, {
 			id: "tracers",
 			name: "Tracers",
 			settings: [{
@@ -54,9 +58,8 @@
 				drawTracers();
 			}
 		}];
-		modules.forEach(module => module.init());
 
-		window.config = new Proxy(JSON.parse(localStorage.getItem("mes_config")) || {}, {
+		const config = new Proxy(JSON.parse(localStorage.getItem("mes_config")) || {}, {
 			get: (obj, prop) => {
 				if (obj[prop]) {
 					return obj[prop];
@@ -147,17 +150,39 @@
 		menuWrapper.css("top", "50%");
 		menuWrapper.css("transform", "translateY(-50%)");
 		menuWrapper.css("text-align", "center");
+		menuWrapper.css("pointer-events", "initial");
 
 		const hackMenu = $("<div/>");
 		hackMenu.attr("id", "hackMenu");
 
-		const categoryChoose = $("<select/>");
-		categoryChoose.css("width", "30%");
-		categoryChoose.append("<option hidden default>Category</option>");
-
 		const settingsBox = $("<div/>");
 		settingsBox.attr("id", "settingsBox");
-		settingsBox.text(`Welcome to the Moomoo Enhancement Suite made by Nebula Developers! All changes you make here will only apply after a refresh.`);
+
+		const categoryChoose = $("<select/>");
+		categoryChoose.css("width", "30%");
+		categoryChoose.append("<option disabled>Choose Category</option>");
+
+		// Add all modules to the module options select...
+		modules.forEach(module => {
+			const moduleOpt = $("<option/>");
+
+			moduleOpt.attr("value", module.id);
+			moduleOpt.text(module.name)
+
+			categoryChoose.append(moduleOpt);
+		});
+
+		categoryChoose.on("change", event => {
+			const newmod = modules.filter(module => module.id === event.target.value)[0];
+			settingsBox.empty();
+
+			const desc = $("<p/>");
+			desc.text(newmod.description || `You can change settings for the ${module.name} module here.`);
+
+			// Append everything to the settings box.
+			settingsBox.append(desc);
+		});
+		categoryChoose.val("core").change();
 		
 		hackMenu.append("<h1>Options</h2>");
 		hackMenu.append(categoryChoose);
@@ -199,6 +224,15 @@
 			menuWrapper.css("display", menuOpen ? "block" : "none");
 		}
 
+		modules.forEach(module => {
+			if (config[module + ".enabled"]) {
+				if (module.init) {
+					module.init();
+				} else {
+					console.warn(`Module ${module.id} has no initialization.`);
+				}
+			}
+		});
 	} catch (e) {
 		console.warn(e)
 	}
