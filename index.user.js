@@ -46,6 +46,7 @@
 			id: "core",
 			name: "Core",
 			description: "Welcome to the Moomoo Enhancement Suite made by Nebula Developers! All changes you make here will only apply after a refresh.",
+			required: true,
 		}, {
 			id: "tracers",
 			name: "Tracers",
@@ -275,16 +276,16 @@
 
 			const desc = $("<p/>");
 			desc.text(newmod.description || `You can change settings for the ${newmod.name} module here.`);
-
-			const enabledToggle = makeInput({
-				type: "checkbox",
-				id: "enabled",
-				name: "Enable Module",
-			}, config[newmod.id].enabled);
-
-			// Append these things to the settings box.
 			settingsBox.append(desc);
-			settingsBox.append(enabledToggle);
+
+			if (!newmod.required) {
+				const enabledToggle = makeInput({
+					type: "checkbox",
+					id: "enabled",
+					name: "Enable Module",
+				}, config[newmod.id].enabled);
+				settingsBox.append(enabledToggle);
+			}
 
 			// Append module-provided settings.
 			if (newmod.settings) {
@@ -349,7 +350,7 @@
 		}
 
 		modules.forEach(module => {
-			if (config[module.id].enabled) {
+			if (config[module.id].enabled || module.required) {
 				if (module.init) {
 					module.init();
 				} else {
