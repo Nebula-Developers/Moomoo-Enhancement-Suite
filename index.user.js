@@ -34,21 +34,24 @@
 			init: () => {
 				const color = config["tracers.line_color"];
 
-				setInterval(() => {
+				function drawTracers() {
 					Object.values(players).forEach(player => {
-						if (currentID === null) return;
+						if (currentID === null || players[currentID] === undefined || players[currentID].longID === undefined) return;
 
 						ctx.strokeStyle = color;
 						ctx.lineWidth = 3;
 
-						const player2 = players[currentID + ""];
+						const player2 = players[currentID];
 
 						ctx.beginPath();
-						ctx.moveTo(canvas.width / 2 - player2.x, canvas.height / 2 - player2.y);
+						ctx.moveTo(player2.x, player2.y);
 						ctx.lineTo(player.x, player.y);
 						ctx.stroke();
 					});
-				});
+
+					window.requestAnimationFrame(drawTracers);
+				}
+				drawTracers();
 			}
 		}];
 		modules.forEach(module => module.init());
