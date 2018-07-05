@@ -10,34 +10,53 @@
 // @grant        none
 // @require      https://cdn.rawgit.com/creationix/msgpack-js-browser/9117d0f8/msgpack.js
 // @require      https://code.jquery.com/jquery-3.3.1.slim.min.js
-// @run-at       document-start
 // ==/UserScript==
 
 (() => {
 	try {
+		class Collection {
+			constructor(array = []) {
+				this.__array = array;
+			}
+
+			fromID(id) {
+				return this.__array.filter(thing => thing.id === id);
+			}
+
+			get(id) {
+				return this.fromID(id)[0];
+			}
+
+			has(id) {
+				return this.fromID(id).length > 0;
+			}
+
+			forEach(callback) {
+				this.__array.forEach(callback);
+			}
+		}
+
 		const canvas = document.getElementById("gameCanvas");
 		const ctx = canvas.getContext("2d");
 
 		const players = {};
 		let currentID = null;
 
-		const modules = [{
+		const modules = new Collection([{
 			id: "core",
 			name: "Core",
 			description: "Welcome to the Moomoo Enhancement Suite made by Nebula Developers! All changes you make here will only apply after a refresh.",
 		}, {
 			id: "tracers",
 			name: "Tracers",
-			settings: [{
+			settings: new Collection([{
 				id: "line_color",
 				type: "color",
 				name: "Line Color",
 				description: "The color of the tracers.",
 				default: "#000000"
-			}],
+			}]),
 			init: () => {
-				const color = config["tracers.line_color"];
-
 				function drawTracers() {
 					Object.values(players).forEach(player => {
 						if (currentID === null || players[currentID] === undefined || players[currentID].longID === undefined) return;
@@ -81,25 +100,28 @@
 			id: "minimap_biomes",
 			name: "Biomes on Minimap",
 			description: "Shows the different biomes on the minimap by coloring each region.",
-		}];
-
-		const config = new Proxy(JSON.parse(localStorage.getItem("mes_config")) || {}, {
-			get: (obj, prop) => {
-				if (obj[prop]) {
-					return obj[prop];
-				} else {
-					const prop2 = prop.split(".");
-					return modules.filter(item => {
-						return item.id === prop2[0];
-					})[0].settings.filter(item => {
-						return item.id === prop2[1];
-					})[0].default;
-				}
+			init: () => {
+				$("#mapDisplay").css("background", "url('https://wormax.org/chrome3kafa/moomooio-background.png')");
 			},
-			set: (obj, prop, val) => {
-				obj[prop] = val;
-				return localStorage.setItem("mes_config", JSON.stringify(obj));
+			deinit: () => {
+				$("#mapDisplay").css("background", "rgba(0, 0, 0, 0.25)");
+			},
+		}]);
+
+		const config = JSON.parse(localStorage.getItem("mes_config")) || {};
+		function setConfig(moduleID, key, value) {
+			if (!config[moduleID]) {
+				config[moduleID] = {};
 			}
+
+			if (!(key === undefined || value === undefined)) {
+				config[moduleID][key] = value;
+			}
+
+			return localStorage.setItem("mes_config", JSON.stringify(config));
+		}
+		modules.forEach(module => {
+			setConfig(module.id);
 		});
 
 		WebSocket = class extends WebSocket {
@@ -197,20 +219,32 @@
 		});
 
 		categoryChoose.on("change", event => {
-			const newmod = modules.filter(module => module.id === event.target.value)[0];
+			const newmod = modules.get(event.target.value);
 			settingsBox.empty();
 
 			const desc = $("<p/>");
 			desc.text(newmod.description || `You can change settings for the ${newmod.name} module here.`);
 
 			const enabledToggle = $(`
-				<label class="settingRadio"><input type="checkbox" /> Enable Module</label>
+				<label class="settingRadio"><input type="checkbox" name="enabled" ${config[newmod.id].enabled ? "checked" : ""} /> Enable Module</label>
 			`);
 
 			// Append everything to the settings box.
 			settingsBox.append(desc);
 			settingsBox.append(enabledToggle);
 		});
+
+		settingsBox.on("change", event => {
+			const target = $(event.target);
+
+			switch (target.attr("type")) {
+				case "checkbox":
+					return setConfig(categoryChoose.val(), target.attr("name"), target.prop("checked"));
+				default:
+					return setConfig(categoryChoose.val(), target.attr("name"), target.val());
+			}
+		});
+
 		categoryChoose.val("core").change();
 		
 		hackMenu.append("<h1>Options</h2>");
@@ -254,7 +288,7 @@
 		}
 
 		modules.forEach(module => {
-			if (config[module.id + ".enabled"]) {
+			if (config[module.id].enabled) {
 				if (module.init) {
 					module.init();
 				} else {
