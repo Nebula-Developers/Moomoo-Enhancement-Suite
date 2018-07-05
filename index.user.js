@@ -15,8 +15,11 @@
 
 (() => {
 	try {
-		const ctx = document.getElementById("gameCanvas").getContext("2d");
+		const canvas = document.getElementById("gameCanvas");
+		const ctx = canvas.getContext("2d");
+
 		const players = {};
+		let currentID = null;
 
 		const modules = [{
 			id: "tracers",
@@ -29,11 +32,23 @@
 				default: "#000000"
 			}],
 			init: () => {
-				function addTracers() {
-					return;
-				}
+				const color = config["tracers.line_color"];
 
-				window.requestAnimationFrame(addTracers)
+				setInterval(() => {
+					Object.values(players).forEach(player => {
+						if (currentID === null) return;
+
+						ctx.strokeStyle = color;
+						ctx.lineWidth = 3;
+
+						const player2 = players[currentID + ""];
+
+						ctx.beginPath();
+						ctx.moveTo(canvas.width / 2 - player2.x, canvas.height / 2 - player2.y);
+						ctx.lineTo(player.x, player.y);
+						ctx.stroke();
+					});
+				});
 			}
 		}];
 		modules.forEach(module => module.init());
@@ -65,6 +80,8 @@
 					const data = msgpack.decode(event.data);
 					
 					switch (data[0]) {
+						case "1":
+							currentID = data[1][0];
 						case "2":
 							players[data[1][0][1]] = {
 								longID: data[1][0][0],
@@ -76,26 +93,26 @@
 							};
 							break;
 						case "3":
-							for (let i = 0, len = data[1].length / 13; i < len; i++) {
-								if (!players[data[1][0 + i * 13]]) {
-									players[data[1][0 + i * 13]] = {
-										x: data[1][1 + i * 13],
-										y: data[1][2 + i * 13],
-										angle: data[1][3 + i * 13],
+							for (let i = 0, len = data[1][0].length / 13; i < len; i++) {
+								if (!players[data[1][0][0 + i * 13]]) {
+									players[data[1][0][0 + i * 13]] = {
+										x: data[1][0][1 + i * 13],
+										y: data[1][0][2 + i * 13],
+										angle: data[1][0][3 + i * 13],
 										lastUpdated: Date.now(),
 									};
 								} else {
-									const p = players[data[1][0 + i * 13]];
-									p.x = data[1][1 + i * 13];
-									p.y = data[1][2 + i * 13],
-									p.angle = data[1][3 + i * 13],
+									const p = players[data[1][0][0 + i * 13]];
+									p.x = data[1][0][1 + i * 13];
+									p.y = data[1][0][2 + i * 13],
+									p.angle = data[1][0][3 + i * 13],
 									p.lastUpdated = Date.now();
 								}
 							}
 							break;
 						case "4":
 							for (const k in players) {
-								if (players[k].longID == data[0][0]) delete players[k];
+								if (players[k].longID == data[1][0]) delete players[k];
 							}
 					}
 				});
@@ -137,7 +154,7 @@
 
 		const settingsBox = $("<div/>");
 		settingsBox.attr("id", "settingsBox");
-		settingsBox.text(`Welcome to the Moomoo Enhancement Suite made by Nebula Developers!`);
+		settingsBox.text(`Welcome to the Moomoo Enhancement Suite made by Nebula Developers! All changes you make here will only apply after a refresh.`);
 		
 		hackMenu.append("<h1>Options</h2>");
 		hackMenu.append(categoryChoose);
