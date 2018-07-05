@@ -106,6 +106,19 @@
 			deinit: () => {
 				$("#mapDisplay").css("background", "rgba(0, 0, 0, 0.25)");
 			},
+		}, {
+			id: "custom_text",
+			name: "Custom Text",
+			description: "This module lets you change the text of many things.",
+			settings: [{
+				id: "death",
+				name: "Death",
+				default: "YOU DIED",
+				type: "text",
+			}],
+			init: () => {
+				$("#diedText").text(config.custom_text.death);
+			},
 		}]);
 
 		const config = JSON.parse(localStorage.getItem("mes_config")) || {};
