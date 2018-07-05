@@ -49,13 +49,13 @@
 		}, {
 			id: "tracers",
 			name: "Tracers",
-			settings: new Collection([{
+			settings: [{
 				id: "line_color",
 				type: "color",
 				name: "Line Color",
 				description: "The color of the tracers.",
 				default: "#000000"
-			}]),
+			}],
 			init: () => {
 				function drawTracers() {
 					Object.values(players).forEach(player => {
@@ -223,7 +223,23 @@
 			input.attr("type", setting.type);
 			input.attr("name", setting.id);
 
+			input.css("margin", "5px");
+			input.css("max-width", "25px");
+
+			const label = $(`<label class="settingRadio" />`);
+			label.text(setting.name);
+
 			switch (setting.type) {
+				case "text":
+					input.css("width", "170px");
+					input.css("max-width", "170px");
+
+					input.attr("placeholder", `Default: ${setting.default}`);
+					input.val(configVal);
+
+					label.text(label.text() + ":");
+
+					break;
 				case "checkbox":
 					input.prop("checked", configVal);
 					break;
@@ -231,9 +247,11 @@
 					input.val(configVal);
 			}
 
-			const label = $(`<label class="settingRadio" />`);
-			label.text(setting.name);
-			label.append(input);
+			if (setting.type === "text") {
+				label.append(input);
+			} else {
+				label.prepend(input);
+			}
 
 			return label;
 		}
