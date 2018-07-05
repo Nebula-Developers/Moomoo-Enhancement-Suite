@@ -250,7 +250,7 @@
 					input.attr("placeholder", `Default: ${setting.default}`);
 					input.val(configVal);
 
-					label.text(label.text() + ":");
+					label.text(setting.name + ":");
 
 					break;
 				case "checkbox":
@@ -290,7 +290,7 @@
 			if (newmod.settings) {
 				settingsBox.append("<br/>");
 				newmod.settings.forEach(setting => {
-					settingsBox.append(makeInput(setting), config[newmod.id][setting.id]);
+					settingsBox.append(makeInput(setting, config[newmod.id][setting.id]));
 				});
 			}
 		});
