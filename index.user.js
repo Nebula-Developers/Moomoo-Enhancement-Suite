@@ -125,9 +125,15 @@
 				name: "Death",
 				default: "YOU DIED",
 				type: "text",
+			}, {
+				id: "title",
+				name: "Title",
+				default: "Moo Moo",
+				type: "text",
 			}],
 			init: () => {
 				$("#diedText").text(config.custom_text.death);
+				document.title = config.custom_text.title;
 			},
 		}]);
 
