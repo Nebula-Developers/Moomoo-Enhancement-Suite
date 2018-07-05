@@ -47,6 +47,15 @@
 			name: "Core",
 			description: "Welcome to the Moomoo Enhancement Suite made by Nebula Developers! All changes you make here will only apply after a refresh.",
 			required: true,
+			init: () => {
+				const example = $($("#linksContainer2").children()[0]);
+
+				const mesLink = example.clone();
+				mesLink.text("MES");
+				mesLink.attr("href", "https://github.com/Nebula-Developers/Moomoo-Enhancement-Suite");
+
+				example.after(" | ", mesLink);
+			}
 		}, {
 			id: "tracers",
 			name: "Tracers",
