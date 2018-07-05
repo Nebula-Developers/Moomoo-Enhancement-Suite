@@ -177,10 +177,15 @@
 			settingsBox.empty();
 
 			const desc = $("<p/>");
-			desc.text(newmod.description || `You can change settings for the ${module.name} module here.`);
+			desc.text(newmod.description || `You can change settings for the ${newmod.name} module here.`);
+
+			const enabledToggle = $(`
+				<label class="settingRadio"><input type="checkbox" /> Enable Module</label>
+			`);
 
 			// Append everything to the settings box.
 			settingsBox.append(desc);
+			settingsBox.append(enabledToggle);
 		});
 		categoryChoose.val("core").change();
 		
@@ -225,7 +230,7 @@
 		}
 
 		modules.forEach(module => {
-			if (config[module + ".enabled"]) {
+			if (config[module.id + ".enabled"]) {
 				if (module.init) {
 					module.init();
 				} else {
