@@ -42,6 +42,13 @@
 		const players = {};
 		let currentID = null;
 
+		function randInt(min, max) {
+			const mini = Math.ceil(min);
+			return Math.floor(Math.random() * (Math.floor(max) - mini + 1)) + mini;
+		}
+		function randItem(array) {
+			return array[randInt(0, array.length - 1)];
+		}
 		const modules = new Collection([{
 			id: "core",
 			name: "Core",
@@ -86,6 +93,41 @@
 				}
 				drawTracers();
 			},
+		}, {
+			id: "auto_chat",
+			name: "Automatic Chat",
+			description: "Automatically chats certain messages.",
+			settings: [{
+				id: "messages",
+				name: "Message List",
+				hover: "You can insert multiple messages with a comma; if you want to say both '1' and '2', put '1,2'.",
+				default: "Hello!,Git gud!",
+				type: "text",
+			}, {
+				id: "randomize_messages",
+				name: "Randomize Messages",
+				default: true,
+				type: "checkbox",
+			}],
+			init: () => {
+				let index = 0;
+				const messages = config.auto_chat.messages.split(",");
+
+				setInterval(() => {
+					if (ws) {
+						const toSend = config.auto_chat.randomize_messages ? randItem(messages) : messages[index]; 
+
+						ws.emit("ch", [
+							toSend,
+						]);
+
+						index += 1;
+						if (index >= messages.length) {
+							index = 0;
+						}
+					}
+				}, 3000);
+			}
 		}, {
 			id: "smart_hat",
 			name: "Smart Hats",
@@ -156,6 +198,7 @@
 		WebSocket = class extends WebSocket {
 			constructor(...arg) {
 				super(...arg);
+				ws = this;
 
 				this.addEventListener("message", event => {
 					const data = msgpack.decode(event.data);
@@ -202,6 +245,10 @@
 				this.send = function () {
 					this._send.apply(this, arguments);
 				};
+				this.emit = function () {
+					const input = msgpack.encode(arguments);
+					this.send(input);
+				}
 			}
 		};
 
