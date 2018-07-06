@@ -249,6 +249,7 @@
 
 		function makeInput(setting, configVal) {
 			const input = $(`<input/>`);
+
 			input.attr("type", setting.type);
 			input.attr("name", setting.id);
 
@@ -256,7 +257,9 @@
 			input.css("max-width", "25px");
 
 			const label = $(`<label class="settingRadio" />`);
+
 			label.text(setting.name);
+			input.attr("title", setting.hover);
 
 			switch (setting.type) {
 				case "text":
@@ -298,14 +301,15 @@
 					type: "checkbox",
 					id: "enabled",
 					name: "Enable Module",
+					hover: "Toggles all functionality in this module.",
 				}, config[newmod.id].enabled);
 				settingsBox.append(enabledToggle);
 			}
 
 			// Append module-provided settings.
 			if (newmod.settings) {
-				settingsBox.append("<br/>");
 				newmod.settings.forEach(setting => {
+					settingsBox.append("<br/>");
 					settingsBox.append(makeInput(setting, config[newmod.id][setting.id]));
 				});
 			}
