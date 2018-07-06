@@ -180,6 +180,17 @@
 				$("#diedText").text(config.custom_text.death);
 				document.title = config.custom_text.title;
 			},
+		}, {
+			id: "ping_display",
+			name: "Show Ping",
+			description: "Adds the ping counter in-game.",
+			init: () => {
+				const pingDisplay = $("#pingDisplay");
+				pingDisplay.css("top", "3px");
+				pingDisplay.css("display", "block");
+
+				$("body").append(pingDisplay);
+			}
 		}]);
 
 		const config = JSON.parse(localStorage.getItem("mes_config")) || {};
