@@ -42,6 +42,8 @@
 		const players = {};
 		let currentID = null;
 
+		let ws;
+
 		function randInt(min, max) {
 			const mini = Math.ceil(min);
 			return Math.floor(Math.random() * (Math.floor(max) - mini + 1)) + mini;
@@ -49,6 +51,7 @@
 		function randItem(array) {
 			return array[randInt(0, array.length - 1)];
 		}
+
 		const modules = new Collection([{
 			id: "core",
 			name: "Core",
