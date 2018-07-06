@@ -61,7 +61,7 @@
 				const example = $($("#linksContainer2").children()[0]);
 
 				const mesLink = example.clone();
-				mesLink.text("MES");
+				mesLink.text(`MES v${GM_info.script.version}`);
 				mesLink.attr("href", "https://github.com/Nebula-Developers/Moomoo-Enhancement-Suite");
 
 				example.after(" | ", mesLink);
@@ -262,6 +262,7 @@
 		const menuButton = $("#allianceButton").clone(false);
 		menuButton.children()[0].innerText = "touch_app";
 		menuButton.css("right", "450px");
+		menuButton.attr("title", `Moomoo Enhancement Script v${GM_info.script.version}`);
 
 		menuButton.on("click", toggleMenu);
 
