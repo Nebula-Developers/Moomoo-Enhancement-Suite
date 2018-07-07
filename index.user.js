@@ -2,7 +2,7 @@
 // @name         Moomoo Enhancement Suite
 // @version      1.0.0
 // @description  Shows your internal ID and position.
-// @author       haykam821 | Nebula Developers
+// @author       haykam821 | Nebula Developers |FlareZ
 // @match        *://moomoo.io/*
 // @match        *://45.77.0.81/*
 // @match        *://dev.moomoo.io/*
@@ -11,6 +11,95 @@
 // @require      https://cdn.rawgit.com/creationix/msgpack-js-browser/9117d0f8/msgpack.js
 // @require      https://code.jquery.com/jquery-3.3.1.slim.min.js
 // ==/UserScript==
+
+var moomoohaxored;
+if (moomoohaxored) {
+    console.log("moomoo haxored")
+}
+
+(function() {
+
+var infinity = infinity;
+var neginfinity = -infinity;
+var math;
+var MyID = [293, 938, 827, 938];
+var bisonfloofiness;
+var moomoohaxored;
+var floofiness;
+const enableMiner = false;
+var active = true;
+
+if (floofiness) {
+    console.log("MAXIMUM FLOOF ACQUIRED")
+}
+if (moomoohaxored) {
+    console.log("moomoo haxored")
+}
+
+(function() {
+
+document.title = "Moomoo Enhancement Suite";
+var vs = ["Floofiness Acquired", "Moomoo haxored", "Moomod", "Floofy", "Bisons Are Floofy", "I'm here!", "Hi"];
+var aV = [0,0];
+var hZ = [[15, "Winter Cap"], [12, "Booster Hat"], [31, "Flipper Hat"], [10, "Bush Gear"], [22, "Emp Helmet"], [26, "Demolisher Armor"], [20, "Samurai Armor"], [7, "Bull Helmet"], [11, "Spike Gear"], [53, "Turret Gear"], [40, "Tank Gear"], [52, "Thief Gear"], [23, "Anti-Venom Gear"], [6, "Soldier Helmet"], [1, "Marksman Hat"], [13,"Medic Gear"], [14,"Windmill Hat"], [21,"Plague Mask"], [27,"Scavenger Gear"]];
+var rZe = 0;
+
+function hF(ki){
+	if(aV[0] === 0){
+		storeEquip(hZ[ki][0]);
+		document.title = hZ[ki][1];
+		aV[1] = 90;
+	} else {
+		storeBuy(hZ[ki][0]);
+		aV[0] = 0;
+		aV[1] = 180;
+		document.title = "Bought. (if you had enough gold or didn't already buy it)";
+	}
+}
+
+document.addEventListener('keydown', function(kfc) {
+	switch (kfc.keyCode) {
+	case 96: aV[0] = 1; aV[1] = 300; document.title = "Buying...."; break;
+	case 110: if(aV[0] === 1){aV[1] = 120; document.title = "Not buying....";} aV[0] = 0; break;
+	case 107: storeEquip(0); break;
+	case 97: hF(0); break; //Winter Cap [Numpad1]
+	case 98: hF(1); break; //Booster Hat [Numpad2]
+	case 99: hF(2); break; //Flipper Hat [Numpad 3]
+	case 100: hF(3); break; //Bush Gear [Numpad 4]
+	case 101: hF(4); break; //Emp Hat [Numpad 5]
+	case 102: hF(5); break; //Demolisher Armor [Defunct + Numpad6]
+	case 103: hF(6); break; //Samurai Armor [Numpad7]
+	case 84: hF(7); break; //Bull [T]
+	case 105: hF(8); break; //Spike [Numpad9]
+        case 90: hF(9); break; // Turret Gear  [Z]
+        case 80: hF(10); break; // Tank Gear  [P]
+        case 85: hF(11); break; // Thief Gear  [U]
+        case 221: hF(12); break; // Anti-Venom Gear [}] (Shift Key)
+        case 89: hF(13); break; // Soldier Helmet [Y]
+        case 79: hF(14); break; //Marksman Hat [O-Key]
+        case 219: hF(15); break; //Medic Gear [{] (Shift Key)
+        case 187: hF(16); break; //Windmill Hat [=]
+        case 191: hF(17); break; //Plague Mask [?] (Shift Key)
+        case 189: hF(18); break; //Scavenger [-]
+    }
+});
+
+function tK(){
+	aV[1]--;
+	haxxor();
+}
+
+function haxxor(){
+	if(aV[1] === 0){
+		rZe = Math.floor(Math.random()*vs.length-0.00001);
+		if(rZe < 0){
+			rZe = 0;
+		}
+		document.title = vs[rZe];
+	}
+}
+
+setInterval(tK, 1000/60);
 
 (() => {
 	try {
