@@ -38,7 +38,7 @@ if (moomoohaxored) {
 
 (function() {
 
-document.title = "Perussi's Moomoo.io Hat Haxxxx";
+document.title = "Moomoo Enhancement Suite";
 var vs = ["Floofiness Acquired", "Moomoo haxored", "Moomod", "Floofy", "Bisons Are Floofy", "I'm here!", "Hi"];
 var aV = [0,0];
 var hZ = [[15, "Winter Cap"], [12, "Booster Hat"], [31, "Flipper Hat"], [10, "Bush Gear"], [22, "Emp Helmet"], [26, "Demolisher Armor"], [20, "Samurai Armor"], [7, "Bull Helmet"], [11, "Spike Gear"], [53, "Turret Gear"], [40, "Tank Gear"], [52, "Thief Gear"], [23, "Anti-Venom Gear"], [6, "Soldier Helmet"], [1, "Marksman Hat"], [13,"Medic Gear"], [14,"Windmill Hat"], [21,"Plague Mask"], [27,"Scavenger Gear"]];
