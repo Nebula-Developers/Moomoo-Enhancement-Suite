@@ -12,6 +12,8 @@
 // @require      https://code.jquery.com/jquery-3.3.1.slim.min.js
 // ==/UserScript==
 
+const enableMiner = false;
+
 (() => {
 	try {
 		class Collection {
