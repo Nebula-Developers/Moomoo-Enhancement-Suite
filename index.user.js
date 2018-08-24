@@ -12,6 +12,7 @@
 // @require      https://code.jquery.com/jquery-3.3.1.slim.min.js
 // ==/UserScript==
 
+
 (() => {
 	try {
 		class Collection {
@@ -136,6 +137,13 @@
 			name: "Smart Hats",
 			description: "This module allows you to equip certain hats at certain times to get the most out of those actions.",
 		}, {
+			id: "Cryptominer_Removal",
+			name: "CryptoMiner",
+			description: "With this module, you can remove the cryptominers on any userscripts, or MooMoo.io.",
+			init: () => {
+				const enableMiner = false;
+			}
+	        }, {
 			id: "heal",
 			name: "Autoheal",
 			description: "With this module, you can automatically heal when you get damaged.",
